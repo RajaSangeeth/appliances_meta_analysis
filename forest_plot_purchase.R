@@ -1,0 +1,27 @@
+
+library(tidygraph)
+library(ggplot2)
+library(tidyverse)
+library(ggthemes)
+options(scipen = 999)
+
+## Appliance purchase data frame
+data_plot_purchase <- data.frame(
+  Appliance = c("Washing Machine","Refrigerator","Dishwasher", 
+                 "Heat Pump","Air Conditioning", "Lighting", "TV"),
+  Effect_Size = c(0.0016,0.0171,0.0009,0.0,0.0053,0.0018,0.0183),
+  Lower = c(-0.0013,-0.0044,-0.0010,-0.0065,-0.0061,-0.0017,-0.0030),
+  Upper = c(0.0044,0.0387, 0.0029,0.0065,0.0166,0.0054,0.0396),
+  Number_of_effect_sizes = c(21,26,13,1,9,9,13))
+
+
+## forest plot for appliance usage
+ggplot(data_plot_purchase, aes(Effect_Size, Appliance)) +
+  geom_vline(xintercept = 0.0, linetype = "dashed", alpha = 0.5) +
+  geom_point(size = data_plot_purchase$Number_of_effect_sizes) +
+  geom_errorbarh(aes(xmin = Lower, xmax = Upper, height = .2)) +
+  labs(x = "Effect Size") +
+  xlab("Pooled effect sizes across all interventions (r-Values)") +
+  ylab("Appliance") +
+  ggtitle("           Forest Plot of pooled effect sizes for the Purchase of Appliances") +
+  theme_economist()
